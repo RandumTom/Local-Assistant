@@ -110,6 +110,11 @@ while True:
             elif choice == "2":
                 print("What should I call you from now on?")
                 name = input()
+                save_name(name)
+                
+                helloNewName = f"Hello {name}!"
+                tprint(helloNewName, font="tarty1")
+                speak(helloNewName, voice=assistantVoice)
                 
             elif choice == "3":
                 break  # back to main menu
