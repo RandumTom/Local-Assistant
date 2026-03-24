@@ -79,6 +79,7 @@ if not assistantVoice:
         assistantVoice = "Leo"
     save_assistant_voice(assistantVoice)
     tprint(f"Voice set to {assistantVoice}", font="tarty1")    
+    speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
 
 #Print a greeting message using art and the name given
 tprint(f"Hello, {name}!", font="tarty1")
@@ -90,3 +91,19 @@ print("2. Reset Config")
 choice = input()
 if choice == "1":
     tprint("Settings", font="tarty1")
+    while True:
+        print("1. Change Voice")
+        print("2. Back")
+        choice = input()
+        if choice == "1":
+            print(" 1. Bella \n 2. Jasper \n 3. Luna \n 4. Bruno \n 5. Rosie \n 6. Hugo \n 7. Kiki \n 8. Leo\n 9. Back")
+            choice = input()
+            voices = {"1": "Bella", "2": "Jasper", "3": "Luna", "4": "Bruno", "5": "Rosie", "6": "Hugo", "7": "Kiki", "8": "Leo"}
+            if choice in voices:
+                assistantVoice = voices[choice]
+                save_assistant_voice(assistantVoice)
+                tprint(f"Voice set to {assistantVoice}", font="tarty1")
+                speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
+            # 9 or anything else goes back to settings menu
+        elif choice == "2":
+            break  # back to main menu
