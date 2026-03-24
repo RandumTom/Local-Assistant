@@ -32,3 +32,10 @@ if name is None:
 #Print a greeting message using art and the name given
 tprint(f"Hello, {name}!", font="tarty1")
 
+print("How can I assist you today?")
+print("1. Settings")
+print("2. ")
+
+choice = input()
+if choice == "1":
+    tprint("Settings", font="tarty1")
