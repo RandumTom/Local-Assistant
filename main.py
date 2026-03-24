@@ -14,6 +14,13 @@ def speak(text, voice=None):
 # Define the path to the config file
 CONFIG_FILE = "config.json"
 
+def reset_config():
+    global name, assistantVoice
+    
+    #Wipe the config file
+    with open(CONFIG_FILE, "w") as f:
+        json.dump({}, f)
+
 # Create a new config file if it doesn't exist
 if not os.path.exists(CONFIG_FILE):
     with open(CONFIG_FILE, "w") as f:
@@ -88,6 +95,7 @@ while True:
     print("How can I assist you today?")
     print("1. Settings")
     print("2. Reset Config")
+    print("Talk to me")
 
     choice = input()
     if choice == "1":
@@ -123,5 +131,36 @@ while True:
         print("N/y")
         choice = input()
         if choice == "y":
-            #reset_config() Still needs to be implemented
+            reset_config() 
             tprint("Config reset.", font="tarty1")
+            #Getting the users name again
+            print("Hello! What should I call you?")
+            name = input()
+            save_name(name)
+            tprint(f"Hello {name}!")
+            
+            #Asking the user for the new Voice the Assistant should use
+            print("What voice do you want me to use? You can change this later in the settings.")
+            print(" 1. Bella \n 2. Jasper \n 3. Luna \n 4. Bruno \n 5. Rosie \n 6. Hugo \n 7. Kiki \n 8. Leo")
+            choice = input()
+            if choice == "1":
+                assistantVoice = "Bella"
+            elif choice == "2":
+                assistantVoice = "Jasper"
+            elif choice == "3":
+                assistantVoice = "Luna"
+            elif choice == "4":
+                assistantVoice = "Bruno"
+            elif choice == "5":
+                assistantVoice = "Rosie"
+            elif choice == "6":
+                assistantVoice = "Hugo"
+            elif choice == "7":
+                assistantVoice = "Kiki"
+            elif choice == "8":
+                assistantVoice = "Leo"
+            save_assistant_voice(assistantVoice)
+            tprint(f"Voice set to {assistantVoice}", font="tarty1")    
+            speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
+    else:
+        speak("Hello", voice=assistantVoice)
