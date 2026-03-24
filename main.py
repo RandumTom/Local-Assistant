@@ -105,7 +105,8 @@ while True:
         while True:
             print("1. Change Voice")
             print("2. Change my Name")
-            print("3. Back")
+            print("3. Use an LLM") #Not yet implemented
+            print("4. Back")
             choice = input()
             if choice == "1":
                 print(" 1. Bella \n 2. Jasper \n 3. Luna \n 4. Bruno \n 5. Rosie \n 6. Hugo \n 7. Kiki \n 8. Leo\n 9. Back")
