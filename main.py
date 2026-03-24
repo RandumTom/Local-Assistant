@@ -127,7 +127,7 @@ while True:
             elif choice == "3":
                 break  # back to main menu
     elif choice == "2":
-        tprint("Are you sure you want to reset the config?", font="tarty1")
+        tprint("Are you sure you \n want to reset \n the config?", font="tarty1")
         print("N/y")
         choice = input()
         if choice == "y":
