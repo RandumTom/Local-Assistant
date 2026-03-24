@@ -1,15 +1,17 @@
 import json
 import os
 from art import tprint
+from colorama import Fore, Style, init
 from kittentts import KittenTTS
 import sounddevice as sd
 
 model = KittenTTS("KittenML/kitten-tts-mini-0.8")
 
 def speak(text, voice=None):
-    audio = model.generate(text, voice=voice or assistantVoice)
+    global assistantVoice
+    audio = model.generate(text, voice=voice or assistantVoice or "Jasper")
     sd.play(audio, samplerate=24000)
-    sd.wait()  # blocks until playback finishes
+    sd.wait()
 
 # Define the path to the config file
 CONFIG_FILE = "config.json"
@@ -127,7 +129,9 @@ while True:
             elif choice == "3":
                 break  # back to main menu
     elif choice == "2":
+        print(Fore.RED, end='')
         tprint("Are you sure you \n want to reset \n the config?", font="tarty1")
+        print(Style.RESET_ALL, end='')
         print("N/y")
         choice = input()
         if choice == "y":
