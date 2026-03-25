@@ -168,6 +168,5 @@ while True:
             tprint(f"Voice set to {assistantVoice}", font="tarty1")    
             speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
     else:
-        speak("Hello", voice=assistantVoice)
         from assistant import run_assistant
         run_assistant()
