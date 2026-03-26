@@ -3,14 +3,6 @@ import os
 from art import tprint
 from colorama import Fore, Style, init
 
-model = KittenTTS("KittenML/kitten-tts-mini-0.8")
-
-def speak(text, voice=None):
-    global assistantVoice
-    audio = model.generate(text, voice=voice or assistantVoice or "Jasper")
-    sd.play(audio, samplerate=24000)
-    sd.wait()
-
 # Define the path to the config file
 CONFIG_FILE = "config.json"
 
