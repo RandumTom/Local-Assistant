@@ -32,6 +32,12 @@ def save_name(name):
     with open(CONFIG_FILE, "w") as f:
         json.dump(data, f)
 
+def save_city(city):
+    data = json.load(open(CONFIG_FILE)) if os.path.exists(CONFIG_FILE) else {}
+    data["city"] = city
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(data, f)
+        
 name = load_name()
 
 # Prompt the user for their name if it hasn't been set yet
@@ -72,7 +78,7 @@ if not assistantVoice:
     elif choice == "5":
         assistantVoice = "Rosie"
     elif choice == "6":
-        assistantVoice = "Hugo"
+        assistantVoice = "Hugo" 
     elif choice == "7":
         assistantVoice = "Kiki"
     elif choice == "8":
@@ -80,6 +86,11 @@ if not assistantVoice:
     save_assistant_voice(assistantVoice)
     tprint(f"Voice set to {assistantVoice}", font="tarty1")    
     speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
+
+#Ask the user in what city they are
+print("What city are you in? This is used for weather.")
+city = input()
+save_city(city)
 
 #Print a greeting message using art and the name given
 tprint(f"Hello, {name}!", font="tarty1")
@@ -97,7 +108,8 @@ while True:
             print("1. Change Voice")
             print("2. Change my Name")
             print("3. Use an LLM") #Not yet implemented
-            print("4. Back")
+            print("4. Change the weather location")
+            print("5. Back")
             choice = input()
             if choice == "1":
                 print(" 1. Bella \n 2. Jasper \n 3. Luna \n 4. Bruno \n 5. Rosie \n 6. Hugo \n 7. Kiki \n 8. Leo\n 9. Back")
@@ -117,8 +129,13 @@ while True:
                 helloNewName = f"Hello {name}!"
                 tprint(helloNewName, font="tarty1")
                 speak(helloNewName, voice=assistantVoice)
+            
+            elif choice == "4":
+                print("What City are you in?")
+                city = input()
+                save_city(city)
                 
-            elif choice == "3":
+            elif choice == "5":
                 break  # back to main menu
     elif choice == "2":
         print(Fore.RED, end='')
