@@ -2,8 +2,6 @@ import json
 import os
 from art import tprint
 from colorama import Fore, Style, init
-from kittentts import KittenTTS
-import sounddevice as sd
 
 model = KittenTTS("KittenML/kitten-tts-mini-0.8")
 
