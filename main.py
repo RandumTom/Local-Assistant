@@ -2,6 +2,7 @@ import json
 import os
 from art import tprint
 from colorama import Fore, Style, init
+from tts import speak
 
 # Define the path to the config file
 CONFIG_FILE = "config.json"
