@@ -40,7 +40,8 @@ def record_until_silence():
 # This is now getting the audio into text that the assistant can understand
 
 model = WhisperModel("small", device="cpu", compute_type="int8")
-segments, _ = model.transcribe(audio, vad_filter=True)
 
-segments, _ = model.transcribe(audio, vad_filter=True)
-transcript = " ".join(segment.text for segment in segments)  # this is what actually runs it
+def transcribe(audio):
+    segments, _ = model.transcribe(audio, vad_filter=True, language="en")
+    transcribe = " ".join(segment.text for segment in segments)
+    return transcribe.strip().lower()
