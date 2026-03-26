@@ -1,5 +1,5 @@
 # Import the module.
-import python_weather
+import python_weather # type: ignore
 
 import asyncio
 
