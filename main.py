@@ -4,6 +4,24 @@ from art import tprint
 from colorama import Fore, Style, init
 from tts import speak
 
+# Define the path for secrets.json, a config file for non settings, but for stuff like, passwords, api keys etc
+SECRETS_FILE = "secrets.json"
+
+if not os.path.exists(SECRETS_FILE):
+    with open(SECRETS_FILE, "w") as f:
+        json.dump({}, f)
+
+def save_sudo_password(password):
+    data = json.load(open(SECRETS_FILE)) if os.path.exists(SECRETS_FILE) else {}
+    data["sudo_password"] = password
+    with open(SECRETS_FILE, "w") as f:
+        json.dump(data, f)
+
+def reset_secrets():
+    with open(SECRETS_FILE, "w") as f:
+        json.dump({}, f)
+
+
 # Define the path to the config file
 CONFIG_FILE = "config.json"
 
@@ -109,7 +127,8 @@ while True:
             print("2. Change my Name")
             print("3. Use an LLM") #Not yet implemented
             print("4. Change the weather location")
-            print("5. Back")
+            print("5. Add a sudo password")
+            print("6. Back")
             choice = input()
             if choice == "1":
                 print(" 1. Bella \n 2. Jasper \n 3. Luna \n 4. Bruno \n 5. Rosie \n 6. Hugo \n 7. Kiki \n 8. Leo\n 9. Back")
@@ -132,10 +151,20 @@ while True:
             
             elif choice == "4":
                 print("What City are you in?")
-                city = input()
+                city = input()password
                 save_city(city)
-                
+            
             elif choice == "5":
+                # Sudo password is optional, so we just ask once
+                print("Would you like to add a sudo password for system commands? (y/N)")
+                print("This is optional and stored locally in secrets.json")
+                choice = input()
+                if choice == "y":
+                    password = input("Enter your sudo password: ")
+                    save_sudo_password(password)
+                    tprint("Sudo password saved.", font="tarty1")
+            
+            elif choice == "6":
                 break  # back to main menu
     elif choice == "2":
         print(Fore.RED, end='')
@@ -146,6 +175,11 @@ while True:
         if choice == "y":
             reset_config() 
             tprint("Config reset.", font="tarty1")
+            print("Do you also want to reset secrets.json? (y/N)")
+            choice = input()
+            if choice == "y":
+                reset_secrets()
+                tprint("Secrets reset.", font="tarty1")
             #Getting the users name again
             print("Hello! What should I call you?")
             name = input()
