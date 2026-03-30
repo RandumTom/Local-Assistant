@@ -56,6 +56,12 @@ def save_city(city):
     with open(CONFIG_FILE, "w") as f:
         json.dump(data, f)
         
+def define_package_manager(package_manager):
+    data = json.load(open(CONFIG_FILE)) if os.path.exists(CONFIG_FILE) else {}
+    data["package_manager"] = package_manager
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(data, f)
+
 name = load_name()
 
 # Prompt the user for their name if it hasn't been set yet
@@ -110,6 +116,11 @@ print("What city are you in? This is used for weather.")
 city = input()
 save_city(city)
 
+#Ask the user for the package manager they are using
+print("Please type your update command:")
+package_manager = input()
+define_package_manager(package_manager)
+
 #Print a greeting message using art and the name given
 tprint(f"Hello, {name}!", font="tarty1")
 
@@ -151,7 +162,7 @@ while True:
             
             elif choice == "4":
                 print("What City are you in?")
-                city = input()password
+                city = input()
                 save_city(city)
             
             elif choice == "5":
@@ -209,6 +220,6 @@ while True:
             save_assistant_voice(assistantVoice)
             tprint(f"Voice set to {assistantVoice}", font="tarty1")    
             speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
-    else:
-        from assistant import run_assistant
-        run_assistant()
+    #else:
+        #from assistant import run_assistant
+        #run_assistant()
