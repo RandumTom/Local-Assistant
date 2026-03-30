@@ -2,8 +2,6 @@ import subprocess
 import json
 import os
 
-from main import package_manager, password
-
 CONFIG_FILE = "config.json"
 SECRETS_FILE = "secrets.json"
 
