@@ -138,8 +138,9 @@ while True:
             print("2. Change my Name")
             print("3. Use an LLM") #Not yet implemented
             print("4. Change the weather location")
-            print("5. Add a sudo password")
-            print("6. Back")
+            print("5. Change update command")
+            print("6. Add a sudo password")
+            print("7. Back")
             choice = input()
             if choice == "1":
                 print(" 1. Bella \n 2. Jasper \n 3. Luna \n 4. Bruno \n 5. Rosie \n 6. Hugo \n 7. Kiki \n 8. Leo\n 9. Back")
@@ -165,7 +166,12 @@ while True:
                 city = input()
                 save_city(city)
             
-            elif choice == "5":
+            elif choice == "5"
+                print("Please type your new update command, please include the -y flag: ")
+                package_manager = input()
+                define_package_manager(package_manager)
+            
+            elif choice == "6":
                 # Sudo password is optional, so we just ask once
                 print("Would you like to add a sudo password for system commands? (y/N)")
                 print("This is optional and stored locally in secrets.json")
@@ -175,7 +181,7 @@ while True:
                     save_sudo_password(password)
                     tprint("Sudo password saved.", font="tarty1")
             
-            elif choice == "6":
+            elif choice == "7":
                 break  # back to main menu
     elif choice == "2":
         print(Fore.RED, end='')
@@ -220,6 +226,14 @@ while True:
             save_assistant_voice(assistantVoice)
             tprint(f"Voice set to {assistantVoice}", font="tarty1")    
             speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
+            
+            prin("What city are you in?")
+            city = input()
+            save_city(city)
+            
+            print("Please type your update command, please include the -y flag: ")
+            package_manager = input()
+            define_package_manager(package_manager)
     else:
         from assistant import run_assistant
         run_assistant()
