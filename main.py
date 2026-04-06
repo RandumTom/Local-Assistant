@@ -166,7 +166,7 @@ while True:
                 city = input()
                 save_city(city)
             
-            elif choice == "5"
+            elif choice == "5":
                 print("Please type your new update command, please include the -y flag: ")
                 package_manager = input()
                 define_package_manager(package_manager)
@@ -227,7 +227,7 @@ while True:
             tprint(f"Voice set to {assistantVoice}", font="tarty1")    
             speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
             
-            prin("What city are you in?")
+            print("What city are you in?")
             city = input()
             save_city(city)
             
