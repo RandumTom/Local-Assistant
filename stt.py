@@ -43,5 +43,5 @@ model = WhisperModel("small", device="cpu", compute_type="int8")
 
 def transcribe(audio):
     segments, _ = model.transcribe(audio, vad_filter=True, language="en")
-    transcribe = " ".join(segment.text for segment in segments)
-    return transcribe.strip().lower()
+    transcript = " ".join(segment.text for segment in segments)
+    return transcript.strip().lower()
