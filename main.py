@@ -1,7 +1,7 @@
 import json
 import os
 from art import tprint
-#from colorama import Fore, Style, init
+from colorama import Fore, Style#, init # type: ignore
 from tts import speak
 
 # Define the path for secrets.json, a config file for non settings, but for stuff like, passwords, api keys etc
