@@ -1,7 +1,7 @@
 import json
 import os
 from art import tprint
-from colorama import Fore, Style, init
+#from colorama import Fore, Style, init
 from tts import speak
 
 # Define the path for secrets.json, a config file for non settings, but for stuff like, passwords, api keys etc
@@ -220,6 +220,6 @@ while True:
             save_assistant_voice(assistantVoice)
             tprint(f"Voice set to {assistantVoice}", font="tarty1")    
             speak(f"I'm will now be using {assistantVoice} as my voice.", voice=assistantVoice)
-    #else:
-        #from assistant import run_assistant
-        #run_assistant()
+    else:
+        from assistant import run_assistant
+        run_assistant()
