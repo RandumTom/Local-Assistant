@@ -1,7 +1,7 @@
 from kittentts import KittenTTS
 import sounddevice as sd
 
-model = KittenTTS("KittenML/kitten-tts-mini-0.8")
+model = KittenTTS("KittenML/kitten-tts-micro-0.8")
 
 def speak(text, voice=None):
     audio = model.generate(text, voice=voice or "Jasper")
