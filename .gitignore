@@ -7,3 +7,4 @@ Voice Assistant with IBM Granite Model Integration
 .zed/
 secrets.json
 guitest.py
+Test/
