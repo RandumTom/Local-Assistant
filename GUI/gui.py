@@ -7,3 +7,8 @@ app = QGuiApplication(sys.argv)
 engine = QQmlApplicationEngine()
 
 engine.load("GUI/main.qml")
+
+if not engine.rootObjects():
+    sys.exit(-1)
+
+sys.exit(app.exec())
