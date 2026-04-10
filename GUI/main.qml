@@ -6,7 +6,10 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
+    color: "#1f1f1e"
     title: "Local Assistant"
+    id: window
+    visibility: Window.Maximized
     
     ColumnLayout {
         anchors.centerIn: parent
@@ -14,6 +17,9 @@ ApplicationWindow {
         
         Label {
             text:"Ask me something:"
+            color: "#c3c2b7"
+            font.family: "Inter"
+            font.pointSize: 40
             Layout.alignment: Qt.AlignHCenter
         }
         
