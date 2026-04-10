@@ -11,31 +11,40 @@ ApplicationWindow {
     id: window
     visibility: Window.Maximized
     
+    FontLoader {
+        id: interFont
+        source: "fonts/JetBrainsMono-Regular.ttf"
+    }
+    
     ColumnLayout {
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.margins: 30
         spacing: 12
-        
+
+        Item {
+            Layout.fillHeight: true
+        }
+
         Label {
-            text:"Ask me something:"
+            text:"greetingBasedOnTimeOfDay + userName"
             color: "#c3c2b7"
-            font.family: "Inter"
+            font.family: "JetBrains Mono"
             font.pointSize: 40
             Layout.alignment: Qt.AlignHCenter
         }
-        
+
+        Item {
+            Layout.fillHeight: true
+        }
+
         TextField {
             id: inputField
             placeholderText: "Type your question here..."
-            Layout.preferredWidth: 400
-        }
-        
-        Button {
-            text: "Send"
+            Layout.preferredWidth: 600
+            Layout.preferredHeight: 40
             Layout.alignment: Qt.AlignHCenter
-            
-            onClicked: {
-                console.log("User input:", inputField.text)
-            }
+            font.family: "JetBrains Mono"
+            font.pointSize: 16
         }
     }
 }
