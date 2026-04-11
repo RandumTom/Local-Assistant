@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Shapes
 
 ApplicationWindow {
     visible: true
@@ -42,12 +43,25 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
         }
         
-        Image {
-            source: microphoneImage("#c0c0c0")
-            sourceSize.width: 120
-            sourceSize.height: 120
+        Item {
+            width: 150
+            height: 150
             Layout.alignment: Qt.AlignHCenter
+        
+            Rectangle {
+                anchors.fill: parent
+                color: "#c0c0c0"
+                radius: width / 2
+            }
+        
+            Image {
+                anchors.centerIn: parent
+                source: microphoneImage("#1f1f1e")
+                sourceSize.width: 80
+                sourceSize.height: 80
+            }
         }
+
 
         Item {
             Layout.fillHeight: true
