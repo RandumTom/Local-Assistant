@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 ApplicationWindow {
     visible: true
@@ -10,6 +9,7 @@ ApplicationWindow {
     color: "#1f1f1e"
     title: "Local Assistant"
     id: window
+    required property var backend
     visibility: Window.Maximized
     
     FontLoader {
@@ -42,7 +42,7 @@ ApplicationWindow {
         Item { Layout.fillHeight: true }
 
         Label {
-            text: "greetingBasedOnTimeOfDay + userName"
+            text: window.backend.greeting + "," + window.backend.username
             color: "#c3c2b7"
             font.family: "JetBrains Mono"
             font.pointSize: 40
@@ -66,6 +66,14 @@ ApplicationWindow {
                 sourceSize.width: 80
                 sourceSize.height: 80
             }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    window.backend.sendMessage("mic button pressed")
+                }
+            }
         }
 
         Item { Layout.fillHeight: true }
@@ -83,6 +91,11 @@ ApplicationWindow {
             background: Rectangle {
                 color: "#2c2c2a"
                 radius: 20
+            }
+            
+            onAccepted: {
+                window.backend.sendMessage(inputField.text)
+                inputField.text = ""
             }
         }
     }
