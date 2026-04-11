@@ -36,7 +36,7 @@ ApplicationWindow {
     
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 30
+        anchors.margins: 70
         spacing: 12
 
         Item { Layout.fillHeight: true }
@@ -78,6 +78,12 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
             font.family: "JetBrains Mono"
             font.pointSize: 16
+            color: "#c3c2b7"
+            
+            background: Rectangle {
+                color: "#2c2c2a"
+                radius: 20
+            }
         }
     }
 
