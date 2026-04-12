@@ -119,6 +119,14 @@ ApplicationWindow {
             sourceSize.width: 40
             sourceSize.height: 40
         }
+        
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                window.backend.sendMessage("settings gear pressed")
+            }
+        }
     }
 
     Item { // Chats Icon
@@ -139,6 +147,14 @@ ApplicationWindow {
             source: chatsIcon("#1f1f1e")
             sourceSize.width: 40
             sourceSize.height: 40
+        }
+        
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                window.backend.sendMessage("chats button pressed")
+            }
         }
     }
 }
