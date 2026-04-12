@@ -71,7 +71,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    window.backend.sendMessage("mic button pressed")
+                    window.backend.micPressed()
                 }
             }
         }
@@ -124,7 +124,7 @@ ApplicationWindow {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
             onClicked: {
-                window.backend.sendMessage("settings gear pressed")
+                window.backend.settingsPressed()
             }
         }
     }
@@ -153,7 +153,7 @@ ApplicationWindow {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
             onClicked: {
-                window.backend.sendMessage("chats button pressed")
+                window.backend.chatsPressed()
             }
         }
     }
