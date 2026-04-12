@@ -6,6 +6,8 @@ import threading
 from PySide6.QtCore import QObject, Slot, Signal, Property
 from datetime import datetime
 
+from mpmath.function_docs import sec
+
 #Logic Imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from assistant import match_input, SKILL_MAP
@@ -110,3 +112,43 @@ class Backend(QObject):
         self._config["city"] = city
         with open("config.json", "w") as f:
             json.dump(self._config, f)
+            
+    @Slot(str)
+    def getName(self):
+        return self._config.get("name", "")
+        
+    @Slot(str)
+    def saveName(self, name):
+        self._config["name"] = name
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)
+
+    @Slot(result=str)
+    def getUpdateCommand(self):
+        return self._config.get("package_manager", "")
+        
+    @Slot(str)
+    def saveUpdateCommand(self, command):
+        self._config["package_manager"] = command
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)
+            
+    @Slot(str)
+    def saaveSudoPassword(self, password):
+        import json as _json
+        with open("secrets.json", "w") as f:
+            secrets = _json.load(f)
+            secrets["sudo_password"] = password
+            with open("secrets.json", "w") as f:
+                _json.dump(secrets, f)
+                
+    @Slot()
+    def resetConfig(self):
+        self._config = {}
+        with open("config.json", "w") as f:
+            json.dump({}, f)
+            
+    @Slot()
+    def resetSecrets(self): 
+        with open("secrets.json", "w") as f:
+            json.dump({}, f)
