@@ -63,7 +63,7 @@ class Backend(QObject):
     @Slot()
     def micPressed(self):
         """Handle mic button - record, transcribe, then process"""
-        threading.Thread(target=self._do_voice_input, daemon=True)
+        threading.Thread(target=self._do_voice_input, daemon=True).start()
         
     def _do_voice_input(self):
         audio = record_until_silence()
@@ -89,3 +89,24 @@ class Backend(QObject):
     def chatsPressed(self):
         """Handle chats button."""
         print("Chats opened")
+        
+    @Slot(result=str)
+    def getAssistantVoice(self):
+        """Return the assistant voice from config."""
+        return self._config.get("assistantVoice", "Jasper")
+        
+    @Slot(str)
+    def saveAssistantVoice(self, voice):
+        self._config["assistantVoice"] = voice
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)
+            
+    @Slot(result=str)
+    def getCity(self):
+        return self._config.get("city", "")
+        
+    @Slot(str)
+    def saveCity(self, city):
+        self._config["city"] = city
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)
