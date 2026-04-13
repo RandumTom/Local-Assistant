@@ -239,6 +239,49 @@ ApplicationWindow {
                     font.family: "JetBrains Mono"
                     font.pointSize: 16
                 }
+                
+                ComboBox {
+                    id: voiceCombo
+                    model: ["Bella", "Jasper", "Luna", "Bruno", "Rosie", "Hugo", "Kiki", "Leo"]
+                    currentIndex: model.indexOf(window.backend.getAssistantVoice())
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                    Layout.preferredWidth: 400
+
+                    onActivated: {
+                        window.backend.saveAssistantVoice(voiceCombo.currentText)
+                    }
+                }
+
+                Button {
+                    id: resetButton
+                    text: resetButton.confirmMode ? "Are you sure?" : "Reset Config"
+                    property bool confirmMode: false
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 14
+                
+                    background: Rectangle {
+                        color: resetButton.confirmMode ? "#cc3333" : "#2c2c2a"
+                        radius: 10
+                    }
+                
+                    contentItem: Text {
+                        text: resetButton.text
+                        color: "#c3c2b7"
+                        font: resetButton.font
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                
+                    onClicked: {
+                        if (confirmMode) {
+                            window.backend.resetConfig()
+                            confirmMode = false
+                        } else {
+                            confirmMode = true
+                        }
+                    }
+                }
             }
         }
     }
@@ -246,6 +289,74 @@ ApplicationWindow {
     StackView {
         id: stackView
         anchors.fill: parent
-        initialItem: homePage
+        initialItem: window.backend.needsSetup() ? setupPage : homePage
+    }
+    
+    Component {
+        id: setupPage
+        
+        Item {
+            anchors.fill: parent
+            
+            ColumnLayout {
+                anchors.centerIn: parent
+                spacing: 20
+                
+                Label {
+                    text: "Welcome to Local Assistant by RandumTom!"
+                    color: "#c3c2b7"
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 24
+                    Layout.alignment: Qt.AlignHCenter
+                }
+                
+                Label { text: "What should I call you?"; color: "#c3c2b7"; font.family: "JetBrains Mono"; font.pointSize: 16 }
+                TextField {
+                    id: setupName
+                    placeholderText: "Enter your name"
+                    font.family: "JetBrains Mono"; font.pointSize: 16; color: "#c3c2b7"
+                    Layout.preferredWidth: 400
+                    background: Rectangle { color: "#2c2c2a"; radius: 10 }
+                }
+                
+                Label { text: "Pick a voice:"; color: "#c3c2b7"; font.family: "JetBrains Mono"; font.pointSize: 16 }
+                ComboBox {
+                    id: setupVoice
+                    model: ["Bella", "Jasper", "Luna", "Bruno", "Rosie", "Hugo", "Kiki", "Leo"]
+                    font.family: "JetBrains Mono"; font.pointSize: 16;
+                    Layout.preferredWidth: 400
+                }
+                
+                Label { text: "What city are you in?"; color: "#c3c2b7"; font.family: "JetBrains Mono"; font.pointSize: 16 }
+                TextField {
+                    id: setupCity
+                    placeholderText: "Enter your city"
+                    font.family: "JetBrains Mono"; font.pointSize: 16; color: "#c3c2b7"
+                    Layout.preferredWidth: 400
+                    background: Rectangle { color: "#2c2c2a"; radius: 10 }
+                }
+                
+                Button {
+                    text: "Done"
+                    Layout.alignment: Qt.AlignHCenter
+                    font.family: "JetBrains Mono"; font.pointSize: 16
+                    
+                    contentItem: Text {
+                        text: "Done"
+                        color: "#c3c2b7"
+                        font: parent.font
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                    background: Rectangle {color: "#2c2c2a"; radius: 10 }
+                    
+                    onClicked: {
+                        window.backend.saveName(setupName.text)
+                        window.backend.saveAssistantVoice(setupVoice.currentText)
+                        window.backend.saveCity(setupCity.text)
+                        stackView.replace(homePage)
+                    }
+                }
+            }
+        }
     }
 }
