@@ -133,12 +133,11 @@ class Backend(QObject):
             
     @Slot(str)
     def saveSudoPassword(self, password):
-        import json as _json
+        with open("secrets.json", "r") as f:
+            secrets = json.load(f)
+        secrets["sudo_password"] = password
         with open("secrets.json", "w") as f:
-            secrets = _json.load(f)
-            secrets["sudo_password"] = password
-            with open("secrets.json", "w") as f:
-                _json.dump(secrets, f)
+            json.dump(secrets, f)
                 
     @Slot()
     def resetConfig(self):
@@ -151,6 +150,16 @@ class Backend(QObject):
         with open("secrets.json", "w") as f:
             json.dump({}, f)
             
-    @Slot()
+    @Slot(result=bool)
     def needsSetup(self):
         return not self._config.get("name")
+        
+    @Slot(str)
+    def saveHotkey(self, hotkey):
+        self._config["hotkey"] = hotkey
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)
+    
+    @Slot(result=str)
+    def getHotkey(self):
+        return self._config.get("hotkey", "")

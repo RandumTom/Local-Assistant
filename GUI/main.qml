@@ -253,18 +253,146 @@ ApplicationWindow {
                     }
                 }
 
+                Label {
+                    text: "Name"
+                    color: "#c3c2b7"
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                }
+
+                TextField {
+                    id: nameField
+                    text: window.backend.getName()
+                    placeholderText: "Enter your name..."
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                    color: "#c3c2b7"
+                    Layout.preferredWidth: 400
+
+                    background: Rectangle {
+                        color: "#2c2c2a"
+                        radius: 10
+                    }
+
+                    onAccepted: window.backend.saveName(nameField.text)
+                }
+
+                Label {
+                    text: "Update Command"
+                    color: "#c3c2b7"
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                }
+
+                TextField {
+                    id: updateCommandField
+                    text: window.backend.getUpdateCommand()
+                    placeholderText: "e.g. sudo dnf upgrade -y"
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                    color: "#c3c2b7"
+                    Layout.preferredWidth: 400
+
+                    background: Rectangle {
+                        color: "#2c2c2a"
+                        radius: 10
+                    }
+
+                    onAccepted: window.backend.saveUpdateCommand(updateCommandField.text)
+                }
+
+                Label {
+                    text: "Hotkey"
+                    color: "#c3c2b7"
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                }
+
+                Rectangle {
+                    id: hotkeyCapture
+                    Layout.preferredWidth: 400
+                    Layout.preferredHeight: 40
+                    color: hotkeyCapture.activeFocus ? "#3c3c3a" : "#2c2c2a"
+                    radius: 10
+                    property string hotkey: window.backend.getHotkey()
+
+                    focus: false
+                    activeFocusOnTab: true
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: hotkeyCapture.activeFocus ? "Press new hotkey..." : (hotkeyCapture.hotkey || "Click to set hotkey")
+                        color: "#c3c2b7"
+                        font.family: "JetBrains Mono"
+                        font.pointSize: 16
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: hotkeyCapture.forceActiveFocus()
+                    }
+
+                    Keys.onPressed: function(event) {
+                        var parts = []
+                        if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
+                        if (event.modifiers & Qt.AltModifier) parts.push("Alt")
+                        if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
+                        if (event.modifiers & Qt.MetaModifier) parts.push("Super")
+
+                        var keyName = ""
+                        if (event.key !== Qt.Key_Control &&
+                            event.key !== Qt.Key_Alt &&
+                            event.key !== Qt.Key_Shift &&
+                            event.key !== Qt.Key_Meta) {
+
+                            var keyMap = {}
+                            keyMap[Qt.Key_Space] = "Space"
+                            keyMap[Qt.Key_Return] = "Enter"
+                            keyMap[Qt.Key_Escape] = "Escape"
+                            keyMap[Qt.Key_Tab] = "Tab"
+                            keyMap[Qt.Key_Backspace] = "Backspace"
+                            keyMap[Qt.Key_Delete] = "Delete"
+                            keyMap[Qt.Key_Up] = "Up"
+                            keyMap[Qt.Key_Down] = "Down"
+                            keyMap[Qt.Key_Left] = "Left"
+                            keyMap[Qt.Key_Right] = "Right"
+
+                            if (event.key in keyMap) {
+                                keyName = keyMap[event.key]
+                            } else if (event.key >= Qt.Key_A && event.key <= Qt.Key_Z) {
+                                keyName = String.fromCharCode(event.key)
+                            } else if (event.key >= Qt.Key_0 && event.key <= Qt.Key_9) {
+                                keyName = String.fromCharCode(event.key)
+                            } else if (event.key >= Qt.Key_F1 && event.key <= Qt.Key_F35) {
+                                keyName = "F" + (event.key - Qt.Key_F1 + 1)
+                            } else if (event.text !== "") {
+                                keyName = event.text.toUpperCase()
+                            }
+
+                            if (keyName !== "") {
+                                parts.push(keyName)
+                                hotkeyCapture.hotkey = parts.join("+")
+                                window.backend.saveHotkey(hotkeyCapture.hotkey)
+                                hotkeyCapture.focus = false
+                            }
+                        }
+
+                        event.accepted = true
+                    }
+                }
+
                 Button {
                     id: resetButton
                     text: resetButton.confirmMode ? "Are you sure?" : "Reset Config"
                     property bool confirmMode: false
                     font.family: "JetBrains Mono"
                     font.pointSize: 14
-                
+
                     background: Rectangle {
                         color: resetButton.confirmMode ? "#cc3333" : "#2c2c2a"
                         radius: 10
                     }
-                
+
                     contentItem: Text {
                         text: resetButton.text
                         color: "#c3c2b7"
@@ -272,7 +400,7 @@ ApplicationWindow {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
-                
+
                     onClicked: {
                         if (confirmMode) {
                             window.backend.resetConfig()
