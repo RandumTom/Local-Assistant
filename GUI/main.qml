@@ -356,6 +356,7 @@ ApplicationWindow {
                             keyMap[Qt.Key_Down] = "Down"
                             keyMap[Qt.Key_Left] = "Left"
                             keyMap[Qt.Key_Right] = "Right"
+                            keyMap[Qt.Key_Copilot] = "Copilot"
 
                             if (event.key in keyMap) {
                                 keyName = keyMap[event.key]
