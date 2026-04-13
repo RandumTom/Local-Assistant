@@ -333,6 +333,7 @@ ApplicationWindow {
                     }
 
                     Keys.onPressed: function(event) {
+                        console.log("Key pressed - key:", event.key, "hex:", "0x" + event.key.toString(16), "text:", JSON.stringify(event.text), "modifiers:", event.modifiers, "scanCode:", event.nativeScanCode)
                         var parts = []
                         if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
                         if (event.modifiers & Qt.AltModifier) parts.push("Alt")
@@ -356,7 +357,7 @@ ApplicationWindow {
                             keyMap[Qt.Key_Down] = "Down"
                             keyMap[Qt.Key_Left] = "Left"
                             keyMap[Qt.Key_Right] = "Right"
-                            keyMap[Qt.Key_Copilot] = "Copilot"
+                            keyMap[0x010000A6] = "Assistant"
 
                             if (event.key in keyMap) {
                                 keyName = keyMap[event.key]
@@ -368,6 +369,8 @@ ApplicationWindow {
                                 keyName = "F" + (event.key - Qt.Key_F1 + 1)
                             } else if (event.text !== "") {
                                 keyName = event.text.toUpperCase()
+                            } else {
+                                keyName = "Scan_" + event.nativeScanCode
                             }
 
                             if (keyName !== "") {
