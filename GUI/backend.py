@@ -6,8 +6,6 @@ import threading
 from PySide6.QtCore import QObject, Slot, Signal, Property
 from datetime import datetime
 
-from mpmath.function_docs import sec
-
 #Logic Imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from assistant import match_input, SKILL_MAP
@@ -113,7 +111,7 @@ class Backend(QObject):
         with open("config.json", "w") as f:
             json.dump(self._config, f)
             
-    @Slot(str)
+    @Slot(result=str)
     def getName(self):
         return self._config.get("name", "")
         
@@ -134,7 +132,7 @@ class Backend(QObject):
             json.dump(self._config, f)
             
     @Slot(str)
-    def saaveSudoPassword(self, password):
+    def saveSudoPassword(self, password):
         import json as _json
         with open("secrets.json", "w") as f:
             secrets = _json.load(f)
@@ -152,3 +150,7 @@ class Backend(QObject):
     def resetSecrets(self): 
         with open("secrets.json", "w") as f:
             json.dump({}, f)
+            
+    @Slot()
+    def needsSetup(self):
+        return not self._config.get("name")
