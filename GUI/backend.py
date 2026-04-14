@@ -12,6 +12,7 @@ from assistant import match_input, SKILL_MAP
 from stt import record_until_silence, transcribe
 from tts import speak
 from chatStorage import saveChats, loadChats, clearChats
+from hotkeyListener import HotkeyListener
 
 class Backend(QObject):
     greetingChanged = Signal()
@@ -22,6 +23,16 @@ class Backend(QObject):
         self._response = ""
         with open("config.json", "r") as f:
             self._config = json.load(f)
+            
+        self._hotkey_listener = HotkeyListener(callback=self._on_hotkey)
+        hotkey = self._config.get("hotkey", "")
+        if hotkey:
+            self._hotkey_listener.set_hotkey(hotkey)
+        self._hotkey_listener.start()
+    
+    def _on_hotkey(self):
+        print("Hotkey pressed!")
+        threading.Thread(target=self._do_voice_input, daemon=True).start()
         
     def _get_greeting(self):
         hour = datetime.now().hour
@@ -159,12 +170,6 @@ class Backend(QObject):
     def needsSetup(self):
         return not self._config.get("name")
         
-    @Slot(str)
-    def saveHotkey(self, hotkey):
-        self._config["hotkey"] = hotkey
-        with open("config.json", "w") as f:
-            json.dump(self._config, f)
-    
     @Slot(result=str)
     def getHotkey(self):
         return self._config.get("hotkey", "")
@@ -195,3 +200,10 @@ class Backend(QObject):
             if chat["id"] == chat_id:
                 return json.dumps(chat)
         return json.dumps(None)
+        
+    @Slot(str)
+    def saveHotkey(self, hotkey):
+        self._config["hotkey"] = hotkey
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)
+        self._hotkey_listener.set_hotkey(hotkey)
