@@ -178,3 +178,20 @@ class Backend(QObject):
         self._config["save_chats"] = enabled
         with open("config.json", "w") as f:
             json.dump(self._config, f)
+            
+    @Slot(result=str)
+    def getChats(self):
+        """Return all chats as a JSON string for QML to parse."""
+        from chatStorage import loadChats
+        chats = loadChats()
+        chats.reverse()
+        return json.dumps(chats)
+        
+    @Slot(str, result=str)
+    def getChatById(self, chat_id):
+        """Return a specific chat by ID as JSON string."""
+        chats = loadChats()
+        for chat in chats:
+            if chat["id"] == chat_id:
+                return json.dumps(chat)
+        return json.dumps(None)

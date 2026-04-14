@@ -156,7 +156,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
-                        window.backend.chatsPressed()
+                        stackView.push(chatsPage)
                     }
                 }
             }
@@ -505,6 +505,164 @@ ApplicationWindow {
                     }
                 }
             }
+        }
+    }
+    
+    Component {
+        id: chatsPage
+        
+        Item {
+            anchors.fill: parent
+            
+            Item {
+                id: chatsBackButton
+                width: 75
+                height: 75
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 20
+                z: 1
+                
+                Rectangle {
+                    anchors.fill: parent
+                    color: "#c0c0c0"
+                    radius: width / 2
+                }
+                
+                Text {
+                    anchors.centerIn: parent
+                    text: "←"
+                    font.pointSize: 24
+                    color: "#1f1f1e"
+                }
+                
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: stackView.pop()
+                }
+            }
+            
+            Label {
+                id: chatsTitle
+                text: "Chats"
+                color: "#c3c2b7"
+                font.family: "JetBrains Mono"
+                font.pointSize: 32
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.topMargin: 40
+            }
+            
+            TextField {
+                id: chatsSearchField
+                placeholderText: "Search your chats..."
+                font.family: "JetBrains Mono"
+                font.pointSize: 14
+                color: "#c3c2b7"
+                anchors.top: chatsTitle.bottom
+                anchors.topMargin: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width * 0.6
+                
+                background: Rectangle {
+                    color: "#2c2c2a"
+                    radius: 20
+                }
+            }
+        
+        ListView {
+            id: chatsList
+            anchors.top: chatsSearchField.bottom
+            anchors.topMargin: 20
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width * 0.6
+            clip: true
+            spacing: 2
+            
+            Component.onCompleted: {
+                var chats = JSON.parse(window.backend.getChats())
+                for (var i = 0; i < chats.length; i++) {
+                    chatsListModel.append({
+                        chatId: chats[i].id,
+                        title: chats[i].messages[0].text,
+                        timestamp: chats[i].timestamp
+                    })
+                }
+            }
+            
+            model: ListModel {
+                id: chatsListModel
+            }
+            
+            delegate: Rectangle {
+                width: chatsList.width
+                height: 70
+                color: chatMouseArea.containsMouse ? "#3c3c3a" : "transparent"
+                radius: 10
+                
+                ColumnLayout {
+                    anchors.fill: parent
+                    anchors.margins: 20
+                    anchors.rightMargin: 20
+                    spacing: 4
+                    
+                    Item { Layout.fillHeight: true }
+                    
+                    Label {
+                        text: model.title
+                        color: "#c3c2b7"
+                        font.family: "JetBrains Mono"
+                        font.pointSize: 14
+                        elide: Text.ElideRight
+                        Layout.fillWidth: true
+                    }
+                    
+                    Label {
+                        text: {
+                            var then = new Date(model.timestamp)
+                            var now = new Date()
+                            var diffMs = now - then
+                            var diffMins = Math.floor(diffMs / 60000)
+                            var diffHours = Math.floor(diffMs / 3600000)
+                            var diffDays = Math.floor(diffMs / 86400000)
+                            
+                            if (diffMins < 1) return "Just now"
+                            if (diffMins < 60) return "Last message " + diffMins + " minutes ago"
+                            if (diffHours < 24) return "Last message " + diffHours + " hours ago"
+                            return "Last message " + diffDays + " days ago"
+                        }
+                        color: "#7a7a6e"
+                        font.family: "JetBrains Mono"
+                        font.pointSize: 11
+                    }
+                    
+                    Item { Layout.fillHeight: true }
+                }
+                
+                Rectangle {
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.leftMargin: 20
+                    anchors.rightMargin: 20
+                    height: 1
+                    color: "#3c3c3a"
+                }
+                
+                MouseArea {
+                    id: chatMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        console.log("Chat clicked: ", model.chatId)
+                    }
+                }
+            }
+        }
         }
     }
 }
