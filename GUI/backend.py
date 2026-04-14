@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from assistant import match_input, SKILL_MAP
 from stt import record_until_silence, transcribe
 from tts import speak
+from chatStorage import saveChats, loadChats, clearChats
 
 class Backend(QObject):
     greetingChanged = Signal()
@@ -58,6 +59,8 @@ class Backend(QObject):
         else:
             self._response = "I didn't understand that."
             speak(self._response)
+        if self._config.get("save_chats", False):
+            saveChats(message, self._response)
         self.responseChanged.emit()
         
     @Slot()
@@ -79,6 +82,8 @@ class Backend(QObject):
             self._response = "I don't understand that."
             speak(self._response)
         self.responseChanged.emit()
+        if self._config.get("save_chats", False):
+            saveChats(transcript, self._response)
         
     @Slot()
     def settingsPressed(self):
@@ -163,3 +168,13 @@ class Backend(QObject):
     @Slot(result=str)
     def getHotkey(self):
         return self._config.get("hotkey", "")
+        
+    @Slot(result=bool)
+    def getSaveChats(self):
+        return self._config.get("save_chats", False)
+        
+    @Slot(bool)
+    def setSaveChats(self, enabled):
+        self._config["save_chats"] = enabled
+        with open("config.json", "w") as f:
+            json.dump(self._config, f)

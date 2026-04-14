@@ -384,6 +384,22 @@ ApplicationWindow {
                         event.accepted = true
                     }
                 }
+                
+                Label {
+                    text: "Save Chats"
+                    color: "#c3c2b7"
+                    font.family: "JetBrains Mono"
+                    font.pointSize: 16
+                }
+                
+                Switch {
+                    id: saveChatsSwitch
+                    checked: window.backend.getSaveChats()
+                    
+                    onToggled: {
+                        window.backend.setSaveChats(saveChatsSwitch.checked)
+                    }
+                }
 
                 Button {
                     id: resetButton
